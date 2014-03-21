@@ -1,4 +1,4 @@
-FilterRSS
+Filterss
 ==========
 
 * **Official page**: [http://filterss.herokuapp.com/](http://filterss.herokuapp.com/)
@@ -7,7 +7,7 @@ FilterRSS
 About
 -----
 
-FilteRSS allows you to filter your RSS according to words that are (or are not) part of the title and of the link address of each item listed in any given RSS
+Filterss allows you to filter your RSS according to words that are (or are not) part of the title and of the link address of each item listed in any given RSS
 
 Installation
 ------------
