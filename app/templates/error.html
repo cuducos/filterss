@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+                <p class="lead col-md-12">
+                    Unable to load <a href="{{ url }}">{{ url }}</a>
+                </p>
+                <p class="col-md-12">
+                    Maybe it is not a valid RSS address, or the server may be down.
+                </p>
+{% endblock %}

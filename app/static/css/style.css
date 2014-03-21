@@ -1,0 +1,63 @@
+header {
+    border-bottom: 1px solid #e3e3e3;
+    margin-bottom: 3em;
+}
+
+header a, header a:hover {
+    text-decoration: none;
+    color: #4a6f9d  ;
+}
+
+#accordion a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#accordion a:hover {
+    text-decoration: none;
+}
+
+sidebar ol {
+    display: block;
+    padding: 0 0 0 26px;
+    list-style: none;
+    counter-reset: numList;
+    margin-top: 1.5em;
+}
+
+sidebar ol li {
+    position: relative;
+    padding-bottom: 0.5em;
+}
+
+sidebar ol li:before {
+    counter-increment: numList;
+    content: counter(numList);    
+    float: left;
+    position: absolute;
+    left: -26px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    line-height: 18px;
+    width: 18px; height: 18px;
+    background: #6794CD;
+    -moz-border-radius: 999px;
+    border-radius: 999px
+}
+
+.comparison {
+    margin-top: 1em;
+}
+
+.comparison td {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+footer {
+    border-top: 1px solid #e3e3e3;
+    margin-top: 3em;
+    padding-top: 1em;
+}

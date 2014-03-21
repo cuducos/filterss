@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+                <article class="col-md-12">
+
+                    <h2>Here it is, the URL for your filtered feed:</h2>
+
+                    <pre>{{ rss_url }}</pre>
+
+                    <p>                        
+                        Just copy and paste this address into your feed reader.
+                    </p>
+
+                </article>
+
+                <div class="col-md-6 comparison">
+                    <h4>
+                        Filtered <small>{{ rss_title }}</small>                        
+                    </h4>
+                    <table class="table table-condensed table-striped">
+                    {% for i in filtered_items %}
+                        <tr>
+                            <td>
+                                <small>{{ i[2] }}</small>
+                            </td>
+                            <td>
+                                <a href="{{ i[1] }}">{{ i[0] }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                    <ul class="list-inline">
+                        <li>
+                            <a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2F{{ rss_url_encoded }}">
+                                <img src="http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-medium_2x.png" alt="Add to Feedly" width="71" height="28" />
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+
+                <div class="col-md-6 comparison">
+                    <h4>
+                        Original <small>{{ rss_title }}</small>                        
+                    </h4>
+                    <table class="table table-condensed table-striped">
+                    {% for i in all_items %}
+                        <tr>
+                            <td>
+                                <small>{{ i[2] }}</small>
+                            </td>
+                            <td>
+                                <a href="{{ i[1] }}">{{ i[0] }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+
+{% endblock %}

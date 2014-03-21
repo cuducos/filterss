@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% macro render_field(field, label_visible=true) -%}
+                                    <div class="form-group {% if field.errors %}has-error{% endif %} {{ kwargs.pop('class_', '') }}">
+                                        {% if field.type != 'HiddenField' and label_visible %}
+                                            <label for="{{ field.id }}" class="control-label">{{ field.label }}</label>
+                                        {% endif %}
+                                        {{ field(class_='form-control', **kwargs) }}
+                                        {% if field.errors %}
+                                            {% for e in field.errors %}
+                                                <p class="help-block">{{ e }}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+{%- endmacro %}
+
+                <sidebar class="col-md-6">
+                    <p class="lead">
+                        Is your RSS feed poluted with unwanted news and posts?<br />
+                        <strong>Get rid of them!</strong>
+                    </p>
+                    <p>
+                        Filterss allows you to filter your RSS according to words that are (or are not) part of the title and of the link address of each item listed in any given RSS…
+                    </p>
+                    <p class="lead">
+                        Here is how it works:
+                    </p>
+                    <ol>
+                        <li class="h4">Paste a URL of a feed you’d like to filter<br /></li>
+                        <li class="h4">
+                            Set up your title and link filters<br />
+                            <small>Any field can be left blank</small>
+                        </li>
+                        <li class="h4">Click the ‘Filter my RSS’ button</li>
+                        <li class="h4">
+                            Add the resulting URL to your RSS reader<br />
+                            <small>It will be filtered as you asked us!</small>
+                        </li>
+                    </ol>
+                </sidebar>
+           
+                
+                <form method="post" action="/filter" role="form" class="col-md-6">
+
+                    <div id="accordion" class="panel-group">
+                        
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#step1">
+                                        Give us the URL of the RSS
+                                    </a>
+                                </h4>
+                            </div><!-- .panel-title -->
+                            <div id="step1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    {{ form.csrf_token }}
+                                    {{ render_field(form.rss_url, placeholder='http://') }}
+                                </div><!-- .panel-collapse -->
+                            </div><!-- .panel-collapse -->
+                        </div><!-- .panel-default -->
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#step2">
+                                        Filter words in the titles <small>optional</small>
+                                    </a>
+                                </h4>
+                            </div><!-- .panel-title -->
+                            <div id="step2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{ render_field(form.title_inc) }}
+                                    <p class="help-block">Word or expression that the title of the post or news must have</p>
+                                    {{ render_field(form.title_exc) }}
+                                    <p class="help-block">Word or expression that the title of the link must <strong>not</strong> have</p>
+                                </div><!-- .panel-collapse -->
+                            </div><!-- .panel-collapse -->
+                        </div><!-- .panel-default -->
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#step3">
+                                        Filter words in the links <small>optional</small>
+                                    </a>
+                                </h4>
+                            </div><!-- .panel-title -->
+                            <div id="step3" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    {{ render_field(form.link_inc) }}
+                                    <p class="help-block">Word that should be part of the link address of post or news</p>
+                                    {{ render_field(form.link_exc) }}
+                                    <p class="help-block">Word that should <strong>not</strong> be part of the link address of post or news</p>
+                                </div><!-- .panel-collapse -->
+                            </div><!-- .panel-collapse -->
+                        </div><!-- .panel-default -->
+
+                    </div><!-- .panel-group -->
+
+                    <input type="submit" value="Filter my RSS" class="btn btn-primary btn-lg" />
+
+                </form>
+
+{% endblock %}
