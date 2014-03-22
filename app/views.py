@@ -1,10 +1,10 @@
-import urllib, urllib2
+import urllib
 import urllib2
 from xml.dom.minidom import parse
-from flask import render_template, redirect, request, make_response
+from flask import render_template, redirect, request, make_response, abort
 from app import app
-from flask_wtf import Form
 from forms import FilterForm
+
 
 @app.route('/')
 @app.route('/index')
@@ -12,11 +12,13 @@ def index():
     form = FilterForm()
     return render_template('form.html', form=form)
 
+
 @app.route('/filter', methods=('GET', 'POST'))
 def filter():
     form = FilterForm()
     if form.validate_on_submit():
-        url_query = url_vars(form.rss_url.data,
+        url_query = url_vars(
+            form.rss_url.data,
             form.title_inc.data,
             form.title_exc.data,
             form.link_inc.data,
@@ -24,16 +26,17 @@ def filter():
         return redirect('/info?' + url_query)
     return render_template('form.html', form=form)
 
+
 @app.route('/rss')
 def rss():
-    
+
     # load GET vars
     url = str(request.args.get("url"))
     t_inc = set_filter(request.args.get("title_inc"))
     t_exc = set_filter(request.args.get("title_exc"))
     l_inc = set_filter(request.args.get("link_inc"))
     l_exc = set_filter(request.args.get("link_exc"))
-    
+
     # load orginal RSS (xml)
     try:
         doc = urllib2.urlopen(url)
@@ -43,7 +46,7 @@ def rss():
 
     # loop items
     for item in dom.getElementsByTagName('item'):
-        
+
         # get title & link
         title = item.getElementsByTagName('title')[0].toxml()
         link = item.getElementsByTagName('link')[0].toxml()
@@ -62,8 +65,8 @@ def rss():
 
     # print RSS (xml)
     filtered = dom.toxml()
-    response= make_response(filtered)
-    response.headers["Content-Type"] = "application/xml"    
+    response = make_response(filtered)
+    response.headers["Content-Type"] = "application/xml"
     return response
 
 
@@ -76,7 +79,8 @@ def info():
     t_exc = set_filter(request.args.get("title_exc"))
     l_inc = set_filter(request.args.get("link_inc"))
     l_exc = set_filter(request.args.get("link_exc"))
-    rss_url = request.url_root + 'rss?' + url_vars(url, t_inc, t_exc, l_inc, l_exc)
+    rss_url = request.url_root + 'rss?'
+    rss_url = rss_url + url_vars(url, t_inc, t_exc, l_inc, l_exc)
     rss_url_encoded = urllib.quote(rss_url)
 
     # load orginal RSS (xml)
@@ -96,7 +100,7 @@ def info():
     all_items = []
     filtered_items = []
     for item in dom.getElementsByTagName('item'):
-        
+
         # get title & link
         title = item.getElementsByTagName('title')[0].toxml()
         link = item.getElementsByTagName('link')[0].toxml()
@@ -116,7 +120,8 @@ def info():
             filtered_items.append([title, link, date])
         all_items.append([title, link, date])
 
-    return render_template('info.html',
+    return render_template(
+        'info.html',
         url=url,
         rss_title=rss_title,
         rss_url=rss_url,
@@ -130,11 +135,13 @@ def error():
     url = str(request.args.get("url"))
     return render_template('error.html', url=url)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-def set_filter (value):
+
+def set_filter(value):
     if value:
         value = str(value)
         value = value.strip()
@@ -143,9 +150,9 @@ def set_filter (value):
 
 
 def url_vars(url, t_inc, t_exc, l_inc, l_exc):
-    
+
     # insert values into a dictionary
-    dic = { 'url' : url }
+    dic = {'url': url}
     if t_inc is not None and t_inc is not False:
         dic['title_inc'] = str(t_inc)
     if t_exc is not None and t_exc is not False:
