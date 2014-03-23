@@ -6,6 +6,9 @@ from xml.dom.minidom import parse
 from flask import render_template, redirect, request, make_response, abort
 from app import app
 from forms import FilterForm
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 @app.route('/')
