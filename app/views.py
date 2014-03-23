@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import textwrap
 import urllib
 import urllib2
 from xml.dom.minidom import parse
@@ -115,8 +117,8 @@ def info():
 
         # sort nodes
         if cond1 and cond2 and cond3 and cond4:
-            filtered_items.append([title, link, date])
-        all_items.append([title, link, date])
+            filtered_items.append([word_wrap(title), link, date])
+        all_items.append([word_wrap(title), link, date])
 
     return render_template(
         'info.html',
@@ -184,3 +186,10 @@ def connect_n_parse(url):
     req = urllib2.Request(url, headers=hdr)
     doc = urllib2.urlopen(req)
     return parse(doc)
+
+
+def word_wrap(txt, length=64):
+    if len(txt) <= length or length == 0:
+        return txt
+    new_txt = textwrap.wrap(txt, length)
+    return new_txt[0] + u'…'
