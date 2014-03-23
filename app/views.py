@@ -89,7 +89,7 @@ def info():
         dom = parse(doc)
     except:
         url_query = url_vars(url, t_inc, t_exc, l_inc, l_exc)
-        return render_template('/error?' + url_query)
+        return redirect('/error?' + url_query)
 
     # get title
     rss_title = dom.getElementsByTagName('title')[0].toxml()
