@@ -39,8 +39,7 @@ def rss():
 
     # load orginal RSS (xml)
     try:
-        doc = urllib2.urlopen(url)
-        dom = parse(doc)
+        dom = connect_n_parse(url)
     except:
         return abort(404)
 
@@ -85,8 +84,7 @@ def info():
 
     # load orginal RSS (xml)
     try:
-        doc = urllib2.urlopen(url)
-        dom = parse(doc)
+        dom = connect_n_parse(url)
     except:
         url_query = url_vars(url, t_inc, t_exc, l_inc, l_exc)
         return redirect('/error?' + url_query)
@@ -177,3 +175,12 @@ def url_vars(url, t_inc, t_exc, l_inc, l_exc):
 
     # url encode and return
     return urllib.urlencode(dic)
+
+
+def connect_n_parse(url):
+    ua = 'Mozilla/5.0'
+    accept = 'application/rss+xml,application/xhtml+xml,application/xml'
+    hdr = {'User-Agent': ua, 'Accept': accept}
+    req = urllib2.Request(url, headers=hdr)
+    doc = urllib2.urlopen(req)
+    return parse(doc)
