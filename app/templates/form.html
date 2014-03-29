@@ -61,7 +61,7 @@
                             </div><!-- .panel-collapse -->
                         </div><!-- .panel-default -->
 
-                        <div class="panel panel-default">
+                        <div class="panel panel-default tags">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#step2">
@@ -72,14 +72,20 @@
                             <div id="step2" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     {{ render_field(form.title_inc) }}
-                                    <p class="help-block">Word or expression that the title of the post or news must have</p>
+                                    <p class="help-block">
+                                        Word or expression that the title of the post or news must have.<br />
+                                        Separate words or expression using commas.
+                                    </p>
                                     {{ render_field(form.title_exc) }}
-                                    <p class="help-block">Word or expression that the title of the link must <strong>not</strong> have</p>
+                                    <p class="help-block">
+                                        Word or expression that the title of the link must <strong>not</strong> have.<br />
+                                        Separate words or expression using commas.
+                                    </p>
                                 </div><!-- .panel-collapse -->
                             </div><!-- .panel-collapse -->
                         </div><!-- .panel-default -->
 
-                        <div class="panel panel-default">
+                        <div class="panel panel-default tags">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#step3">
@@ -90,9 +96,15 @@
                             <div id="step3" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     {{ render_field(form.link_inc) }}
-                                    <p class="help-block">Word that should be part of the link address of post or news</p>
+                                    <p class="help-block">
+                                        Word that should be part of the link address of post or news.<br />
+                                        Separate words or expression using commas.
+                                    </p>
                                     {{ render_field(form.link_exc) }}
-                                    <p class="help-block">Word that should <strong>not</strong> be part of the link address of post or news</p>
+                                    <p class="help-block">
+                                        Word that should <strong>not</strong> be part of the link address of post or news.<br />
+                                        Separate words or expression using commas.
+                                    </p>
                                 </div><!-- .panel-collapse -->
                             </div><!-- .panel-collapse -->
                         </div><!-- .panel-default -->

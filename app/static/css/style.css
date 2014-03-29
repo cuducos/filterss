@@ -47,6 +47,10 @@ sidebar ol li:before {
     border-radius: 999px
 }
 
+.help-block strong {
+    text-decoration: underline;
+}
+
 .comparison {
     margin-top: 1em;
 }
@@ -60,4 +64,82 @@ footer {
     border-top: 1px solid #e3e3e3;
     margin-top: 3em;
     padding-top: 1em;
+}
+
+/* jQuery-Tags-Input */
+
+div.tagsinput {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 5px;
+    width: 100%;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    overflow-y: auto;
+}
+
+html #home div section form #accordion div div div.panel-body div.form-group div#title_inc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#link_inc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag {
+    border: 1px solid #dfebcd;
+    background: #e7f2dd;
+    color: #689255;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    display: block;
+    float: left;
+    padding: 5px;
+    text-decoration: none;
+    margin: 0 5px 5px 0;
+}
+
+html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag {
+    border-color: #e5d1d5;
+    background-color: #eee1e1;
+    color: #9c4f4f;
+}
+
+html #home div section form #accordion div div div.panel-body div.form-group div#title_inc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#link_inc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag a {
+    display: inline;
+    font-weight: bold;
+    color: #689255;
+    text-decoration: none;
+    font-size: 80%;
+}
+
+html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag a {
+    color: #9c4f4f;
+}
+
+div.tagsinput input {
+    width: 80px;
+    margin: 0px;
+    border: 0 solid transparent;
+    color: #000;
+    padding: 5px;
+    background-color: transparent;
+    outline: 0px;
+    margin: 0 5px 5px 0;
+}
+
+div.tagsinput div {
+    display: block;
+    float: left;
+} 
+
+.tags_clear {
+    clear: both;
+    width: 100%;
+    height: 0px;
+}
+
+.not_valid {
+    background: #fbd8dB;
+    color: #90111a;
 }

@@ -58,10 +58,10 @@ def rss():
         link = link[6:-7]
 
         # test conditions
-        cond1 = not t_inc or t_inc in title.lower()
-        cond2 = not t_exc or t_exc not in title.lower()
-        cond3 = not l_inc or l_inc in link.lower()
-        cond4 = not l_exc or l_exc not in link.lower()
+        cond1 = test_cond(t_inc, title, True)
+        cond2 = test_cond(t_exc, title, False)
+        cond3 = test_cond(l_inc, link, True)
+        cond4 = test_cond(l_exc, link, False)
 
         # delete undesired nodes
         if not cond1 or not cond2 or not cond3 or not cond4:
@@ -113,10 +113,10 @@ def info():
         date = date[14:-25]
 
         # test conditions
-        cond1 = not t_inc or t_inc in title.lower()
-        cond2 = not t_exc or t_exc not in title.lower()
-        cond3 = not l_inc or l_inc in link.lower()
-        cond4 = not l_exc or l_exc not in link.lower()
+        cond1 = test_cond(t_inc, title, True)
+        cond2 = test_cond(t_exc, title, False)
+        cond3 = test_cond(l_inc, link, True)
+        cond4 = test_cond(l_exc, link, False)
 
         # sort nodes
         if cond1 and cond2 and cond3 and cond4:
@@ -183,12 +183,26 @@ def url_vars(url, t_inc, t_exc, l_inc, l_exc):
 
 
 def connect_n_parse(url):
-    ua = 'Mozilla/5.0'
-    accept = 'application/rss+xml,application/xhtml+xml,application/xml'
-    hdr = {'User-Agent': ua, 'Accept': accept}
-    req = urllib2.Request(url, headers=hdr)
-    doc = urllib2.urlopen(req)
+    try:
+        ua = 'Mozilla/5.0'
+        accept = 'application/rss+xml,application/xhtml+xml,application/xml'
+        hdr = {'User-Agent': ua, 'Accept': accept}
+        req = urllib2.Request(url, headers=hdr)
+        doc = urllib2.urlopen(req)
+    except:
+        doc = urllib2.urlopen(url)
     return parse(doc)
+
+
+def test_cond(condition, value, inclusive):
+    if condition is None:
+        return True
+    condictons = condition.split(',')
+    for c in condictons:
+        c = c.strip()
+        if c and c in value.lower():
+            return inclusive
+    return not inclusive
 
 
 def word_wrap(txt, length=64):
