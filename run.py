@@ -1,9 +1,11 @@
 #!venv/bin/python
 from app import app
+import os
 app.debug = True
+basedir = os.path.abspath(os.path.dirname(__file__))
 if not app.debug:
     import logging
-    from logging.handlers import FileHandler
-    file_handler = FileHandler('log.txt')
+    from logging.handlers import SysLogHandler
+    file_handler = SysLogHandler()
     file_handler.setLevel(logging.INFO)
 app.run()
