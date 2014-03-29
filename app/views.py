@@ -133,6 +133,13 @@ def info():
         filtered_items=filtered_items)
 
 
+@app.route('/robots.txt', methods=['GET'])
+def sitemap():
+    response = make_response(open('robots.txt').read())
+    response.headers["Content-type"] = "text/plain"
+    return response
+
+
 @app.route('/error')
 def error():
     url = str(request.args.get("url"))
@@ -141,7 +148,7 @@ def error():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('error.html'), 404
 
 
 def set_filter(value):
