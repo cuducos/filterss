@@ -6,6 +6,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 if not app.debug:
     import logging
     from logging.handlers import SysLogHandler
-    file_handler = SysLogHandler()
-    file_handler.setLevel(logging.INFO)
+    handler = SysLogHandler()
+    handler.setLevel(logging.INFO)
 app.run()
