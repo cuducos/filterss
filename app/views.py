@@ -2,6 +2,8 @@
 import textwrap
 import urllib
 import urllib2
+import re
+import rfc822
 from xml.dom.minidom import parse
 from flask import render_template, redirect, request, make_response, abort
 from app import app
@@ -54,8 +56,8 @@ def rss():
         # get title & link
         title = item.getElementsByTagName('title')[0].toxml()
         link = item.getElementsByTagName('link')[0].toxml()
-        title = title[7:-8]
-        link = link[6:-7]
+        title = remove_tags(title)
+        link = remove_tags(link)
 
         # test conditions
         cond1 = test_cond(t_inc, title, True)
@@ -96,8 +98,7 @@ def info():
 
     # get title
     rss_title = dom.getElementsByTagName('title')[0].toxml()
-    rss_title = rss_title[7:-8]
-    rss_title = rss_title.strip()
+    rss_title = remove_tags(rss_title)
 
     # loop items
     all_items = []
@@ -108,9 +109,9 @@ def info():
         title = item.getElementsByTagName('title')[0].toxml()
         link = item.getElementsByTagName('link')[0].toxml()
         date = item.getElementsByTagName('pubDate')[0].toxml()
-        title = title[7:-8]
-        link = link[6:-7]
-        date = date[14:-25]
+        title = remove_tags(title)
+        link = remove_tags(link)
+        date = remove_tags(date)
 
         # test conditions
         cond1 = test_cond(t_inc, title, True)
@@ -120,8 +121,8 @@ def info():
 
         # sort nodes
         if cond1 and cond2 and cond3 and cond4:
-            filtered_items.append([word_wrap(title), link, date])
-        all_items.append([word_wrap(title), link, date])
+            filtered_items.append([word_wrap(title), link, format_date(date)])
+        all_items.append([word_wrap(title), link, format_date(date)])
 
     return render_template(
         'info.html',
@@ -212,8 +213,32 @@ def test_cond(condition, value, inclusive):
     return not inclusive
 
 
-def word_wrap(txt, length=64):
+def remove_tags(string):
+    tags = ['title', 'link', 'pubDate']
+    tags_re = '(%s)' % '|'.join(tags)
+    starttag_re = re.compile(r'<%s(/?>|(\s+[^>]*>))' % tags_re, re.U)
+    endtag_re = re.compile('</%s>' % tags_re)
+    string = starttag_re.sub('', string)
+    string = endtag_re.sub('', string)
+    string = string.replace('<![CDATA[', '')
+    string = string.replace(']]>', '')
+    return string.strip()
+
+
+def word_wrap(txt, length=48):
     if len(txt) <= length or length == 0:
         return txt
     new_txt = textwrap.wrap(txt, length)
     return new_txt[0] + u'…'
+
+
+def format_date(string):
+    new_date = rfc822.parsedate_tz(string)
+    y = str(new_date[0])
+    m = str(new_date[1])
+    d = str(new_date[2])
+    if len(d) < 2:
+        d = '0' + d
+    if len(m) < 2:
+        m = '0' + m
+    return d + '/' + m + '/' + y
