@@ -21,10 +21,10 @@
                     {% for i in filtered_items %}
                         <tr>
                             <td>
-                                <small>{{ i[2] }}</small>
+                                <small>{{ i.date }}</small>
                             </td>
                             <td>
-                                <a href="{{ i[1] }}">{{ i[0] }}</a>
+                                <a href="{{ i.url }}" title="{{ i.title }}">{{ i.title_wrap }}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -45,12 +45,12 @@
                     </h4>
                     <table class="table table-condensed table-striped">
                     {% for i in all_items %}
-                        <tr>
+                        <tr class="{{ i.css_class }}">
                             <td>
-                                <small>{{ i[2] }}</small>
+                                <small>{{ i.date }}</small>
                             </td>
                             <td>
-                                <a href="{{ i[1] }}">{{ i[0] }}</a>
+                                <a href="{{ i.url }}" title="{{ i.title }}">{{ i.title_wrap }}</a>
                             </td>
                         </tr>
                     {% endfor %}

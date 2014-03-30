@@ -55,9 +55,14 @@ sidebar ol li:before {
     margin-top: 1em;
 }
 
-.comparison td {
+.comparison tr td {
     white-space: nowrap;
     overflow: hidden;
+}
+
+.comparison tr.skip td {
+    text-decoration: line-through;
+    opacity: 0.3;
 }
 
 footer {

@@ -120,9 +120,16 @@ def info():
         cond4 = test_cond(l_exc, link, False)
 
         # sort nodes
+        item_class = 'normal'
+        item = {'title': title,
+                'title_wrap': word_wrap(title),
+                'url': link,
+                'date': format_date(date),
+                'css_class': item_class}
         if cond1 and cond2 and cond3 and cond4:
-            filtered_items.append([word_wrap(title), link, format_date(date)])
-        all_items.append([word_wrap(title), link, format_date(date)])
+            filtered_items.append(item)
+            item['css_class'] = 'skip'
+        all_items.append(item)
 
     return render_template(
         'info.html',
