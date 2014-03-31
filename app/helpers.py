@@ -158,7 +158,7 @@ def get_url(url):
     and return a string (the original URL or the corrected one)
     """
     url_tested = test_url(url)
-    if test_url in ('True', 'False'):
-        return url
-    else:
+    if isinstance(url_tested, str):
         return url_tested
+    else:
+        return url
