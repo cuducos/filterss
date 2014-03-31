@@ -49,7 +49,7 @@ def rss():
     try:
         dom = connect_n_parse(url)
     except:
-        return abort(404)
+        return abort(500)
 
     # loop items
     for item in dom.getElementsByTagName('item'):
@@ -161,9 +161,9 @@ def error():
     return render_template('error.html', url=url)
 
 
-@app.errorhandler(404)
+@app.errorhandler(500)
 def page_not_found(e):
-    return render_template('error.html'), 404
+    return render_template('error.html'), 500
 
 
 def set_filter(value):
