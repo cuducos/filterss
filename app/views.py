@@ -121,7 +121,7 @@ def info():
         cond4 = test_cond(l_exc, link, False)
 
         # sort nodes
-        item_class = 'normal'
+        item_class = 'skip'
         item = {'title': title,
                 'title_wrap': word_wrap(title),
                 'url': link,
@@ -129,7 +129,7 @@ def info():
                 'css_class': item_class}
         if cond1 and cond2 and cond3 and cond4:
             filtered_items.append(item)
-            item['css_class'] = 'skip'
+            item['css_class'] = ''
         all_items.append(item)
 
     return render_template(
