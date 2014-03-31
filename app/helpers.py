@@ -8,6 +8,10 @@ from xml.dom.minidom import parse
 
 
 def set_filter(value):
+    """
+    Return filter as lower case string (for case-insensitive search) or
+    return None for blank/False values
+    """
     if value:
         value = str(value)
         value = value.strip()
@@ -16,6 +20,9 @@ def set_filter(value):
 
 
 def url_vars(url, t_inc, t_exc, l_inc, l_exc):
+    """
+    Returns a string with the URL GET vars encoded
+    """
 
     # insert values into a dictionary
     dic = {'url': url}
@@ -46,6 +53,9 @@ def url_vars(url, t_inc, t_exc, l_inc, l_exc):
 
 
 def connect_n_parse(url):
+    """
+    Connect to a given URL and return the parse of the result
+    """
     try:
         ua = 'Mozilla/5.0'
         accept = 'application/rss+xml,application/xhtml+xml,application/xml'
@@ -58,6 +68,11 @@ def connect_n_parse(url):
 
 
 def test_cond(condition, value, inclusive):
+    """
+    Separte multiple conditions separeted by commas (filters) and test them for
+    a given value; the inclusive boolean var decide if it should or should not
+    macth the be present in the given value. It always returns a boolean.
+    """
     if condition is None:
         return True
     condictons = condition.split(',')
@@ -69,6 +84,9 @@ def test_cond(condition, value, inclusive):
 
 
 def remove_tags(string):
+    """
+    Return str with certaing html/xml tags removed (title, link and pubDate)
+    """
     tags = ['title', 'link', 'pubDate']
     tags_re = '(%s)' % '|'.join(tags)
     starttag_re = re.compile(r'<%s(/?>|(\s+[^>]*>))' % tags_re, re.U)
@@ -81,6 +99,10 @@ def remove_tags(string):
 
 
 def word_wrap(txt, length=48):
+    """
+    Return a wrapped a paragraph adding elipse after the first word that
+    appears after a given number of characters (length var)
+    """
     if len(txt) <= length or length == 0:
         return txt
     new_txt = textwrap.wrap(txt, length)
@@ -88,6 +110,9 @@ def word_wrap(txt, length=48):
 
 
 def format_date(string):
+    """
+    Return a date (dd/mm/yyyy) from a rfc822 string format
+    """
     new_date = rfc822.parsedate_tz(string)
     y = str(new_date[0])
     m = str(new_date[1])
@@ -128,6 +153,10 @@ def test_url(url):
 
 
 def get_url(url):
+    """
+    Use test_url() to try to correct an URL according to common errors
+    and return a string (the original URL or the corrected one)
+    """
     url_tested = test_url(url)
     if test_url in ('True', 'False'):
         return url
