@@ -54,9 +54,10 @@
                                 </h4>
                             </div><!-- .panel-title -->
                             <div id="step1" class="panel-collapse collapse in">
-                                <div class="panel-body">
+                                <div class="panel-body has-feedback" id="rss_url_fieldset">
                                     {{ form.csrf_token }}
                                     {{ render_field(form.rss_url, placeholder='http://') }}
+                                    <span id="url_feedback" class="glyphicon form-control-feedback"></span>
                                 </div><!-- .panel-collapse -->
                             </div><!-- .panel-collapse -->
                         </div><!-- .panel-default -->
@@ -111,7 +112,7 @@
 
                     </div><!-- .panel-group -->
 
-                    <input type="submit" value="Filter my RSS" class="btn btn-primary btn-lg" />
+                    <button id="submit_btn" type="submit" class="btn btn-primary btn-lg">Filter my RSS</button>
 
                 </form>
 

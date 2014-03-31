@@ -141,6 +141,12 @@ def info():
         filtered_items=filtered_items)
 
 
+@app.route('/check_url', methods=['GET'])
+def check_url():
+    url = request.args.get('url')
+    return str(test_url(url))
+
+
 @app.route('/robots.txt', methods=['GET'])
 def sitemap():
     response = make_response(open('robots.txt').read())
@@ -249,3 +255,30 @@ def format_date(string):
     if len(m) < 2:
         m = '0' + m
     return d + '/' + m + '/' + y
+
+
+def test_url(url):
+    """
+    Test the URL and returns True, False or a string with a
+    corrected URL value according to common errors
+    """
+    prefix_pattern = '(https?:?\/\/|feed:\/\/)'
+    sufix_pattern = '([a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)'
+    pattern = prefix_pattern + sufix_pattern
+    test = re.search(pattern, url)
+    if test:
+        prefix = test.group(1)
+        if prefix == 'feed://':
+            return 'http://' + test.group(2)
+        elif prefix == 'http//' or prefix == 'https//':
+            new_prefix = prefix.replace('//', '://')
+            return new_prefix + test.group(2)
+        else:
+            return True
+    else:
+        new_url = 'http://' + url
+        new_test = re.match(pattern, new_url)
+        if new_test:
+            return new_url
+        else:
+            return False

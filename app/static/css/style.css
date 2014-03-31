@@ -47,6 +47,11 @@ sidebar ol li:before {
     border-radius: 999px
 }
 
+#url_feedback {
+    display: none;
+    margin: 20px 12px 0 0;
+}
+
 .help-block strong {
     text-decoration: underline;
 }
