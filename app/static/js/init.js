@@ -7,19 +7,8 @@ $(document).ready(function(){
     $('#link_exc').tagsInput({'defaultText': '…'});
 
     set_submit(false)
-    $('#rss_url').blur(function(){
-        url = $(this).val()
-        $.get( "/check_url?&url=" + escape(url), function( data ) {
-            if (data == 'False') {
-                set_feedback(false)
-            } else {
-                set_feedback(true)
-                if (data != 'True') {
-                    $('#rss_url').val(data)
-                }
-            }
-        });
-    })
+    $('#rss_url').blur(check_url)
+    check_url()
 
 })
 
@@ -34,7 +23,7 @@ set_feedback = function (value) {
         fieldset.addClass('has-error').removeClass('has-success')
         feedback.show().addClass('glyphicon-remove').removeClass('glyphicon-ok')
         set_submit(false)
-        
+
     }
 
 }
@@ -46,4 +35,18 @@ set_submit = function (value) {
     } else {
         btn.attr('disabled', 'disabled')
     }
+}
+
+check_url = function () {
+    url = $('#rss_url').val()
+    $.get( "/check_url?&url=" + escape(url), function( data ) {
+        if (data == 'False') {
+            set_feedback(false)
+        } else {
+            set_feedback(true)
+            if (data != 'True') {
+                $('#rss_url').val(data)
+            }
+        }
+    });
 }
