@@ -24,8 +24,9 @@ def index():
 def filter():
     form = FilterForm()
     if form.validate_on_submit():
+        url = get_url(form.rss_url.data)
         url_query = url_vars(
-            form.rss_url.data,
+            url,
             form.title_inc.data,
             form.title_exc.data,
             form.link_inc.data,
@@ -38,7 +39,7 @@ def filter():
 def rss():
 
     # load GET vars
-    url = str(request.args.get("url"))
+    url = set_filter(request.args.get("url"))
     t_inc = set_filter(request.args.get("title_inc"))
     t_exc = set_filter(request.args.get("title_exc"))
     l_inc = set_filter(request.args.get("link_inc"))
@@ -80,7 +81,7 @@ def rss():
 def info():
 
     # load GET vars
-    url = str(request.args.get("url"))
+    url = set_filter(request.args.get("url"))
     t_inc = set_filter(request.args.get("title_inc"))
     t_exc = set_filter(request.args.get("title_exc"))
     l_inc = set_filter(request.args.get("link_inc"))
@@ -265,6 +266,7 @@ def test_url(url):
     prefix_pattern = '(https?:?\/\/|feed:\/\/)'
     sufix_pattern = '([a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)'
     pattern = prefix_pattern + sufix_pattern
+    url = str(url)
     test = re.search(pattern, url)
     if test:
         prefix = test.group(1)
@@ -282,3 +284,11 @@ def test_url(url):
             return new_url
         else:
             return False
+
+
+def get_url(url):
+    url_tested = test_url(url)
+    if test_url in ('True', 'False'):
+        return url
+    else:
+        return url_tested
