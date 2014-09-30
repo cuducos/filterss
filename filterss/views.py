@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from flask import render_template, redirect, request, make_response, abort
 from filterss import app
 from forms import FilterForm
@@ -12,10 +12,8 @@ sys.setdefaultencoding('utf-8')
 
 
 @app.route('/')
-@app.route('/index')
 def index():
-    form = FilterForm()
-    return render_template('form.html', form=form)
+    return render_template('form.html', form=FilterForm())
 
 
 @app.route('/filter', methods=('GET', 'POST'))
