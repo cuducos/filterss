@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import render_template, redirect, request, make_response, abort
-from app import app
+from filterss import app
 from forms import FilterForm
 from helpers import get_url, url_vars, set_filter, connect_n_parse
 from helpers import remove_tags, test_cond, word_wrap, format_date, test_url

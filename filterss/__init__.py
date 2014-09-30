@@ -1,6 +1,10 @@
+# coding: utf-8
+
 from flask import Flask
+from flask.ext.script import Manager
 
-app = Flask(__name__)
+# init app
+app = Flask('filterss')
 app.config.from_object('config')
-
-from app import views
+manager = Manager(app)
+from filterss import views

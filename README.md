@@ -14,7 +14,7 @@ Installation
 
 * If you want, get your [Python](http://www.python.org) running under a [virtualenv](https://pypi.python.org/pypi/virtualenv).
 * Install whatever is needed with `pip install -r requirements.txt`.
-* Then `./run.py` to start your server (you might have to give the right permissions to this script by typing `chmod a+x run.py`).
+* Then `python manage.py runserver` to start your server.
 
 License
 -------
