@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 import textwrap
 import urllib
 import urllib2
@@ -114,14 +114,10 @@ def format_date(string):
     Return a date (dd/mm/yyyy) from a rfc822 string format
     """
     new_date = rfc822.parsedate_tz(string)
-    y = str(new_date[0])
-    m = str(new_date[1])
-    d = str(new_date[2])
-    if len(d) < 2:
-        d = '0' + d
-    if len(m) < 2:
-        m = '0' + m
-    return d + '/' + m + '/' + y
+    y = new_date[0]
+    m = '{0:0>2}'.format(new_date[1])
+    d = '{0:0>2}'.format(new_date[2])
+    return '{}/{}/{}'.format(d, m, y)
 
 
 def test_url(url):
