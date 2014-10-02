@@ -4,6 +4,7 @@ import urllib
 import urllib2
 import re
 import rfc822
+from filterss import app
 from xml.dom.minidom import parse
 
 
@@ -13,9 +14,7 @@ def set_filter(value):
     return None for blank/False values
     """
     if value:
-        value = str(value)
-        value = value.strip()
-        return value.lower()
+        return str(value).strip().lower()
     return None
 
 
@@ -23,33 +22,11 @@ def url_vars(url, t_inc, t_exc, l_inc, l_exc):
     """
     Returns a string with the URL GET vars encoded
     """
-
-    # insert values into a dictionary
-    dic = {'url': url}
-    if t_inc is not None and t_inc is not False:
-        dic['title_inc'] = str(t_inc)
-    if t_exc is not None and t_exc is not False:
-        dic['title_exc'] = str(t_exc)
-    if l_inc is not None and l_inc is not False:
-        dic['link_inc'] = str(l_inc)
-    if t_exc is not None and l_exc is not False:
-        dic['link_exc'] = str(l_exc)
-
-    # list empty entries
-    del_keys = []
-    for key in dic:
-        value = dic[key].strip()
-        if value:
-            dic[key] = value
-        else:
-            del_keys.append(key)
-
-    # delete empty entries
-    for k in del_keys:
-        del dic[k]
-
-    # url encode and return
-    return urllib.urlencode(dic)
+    keys = app.config['FILTERS']
+    values = [eval(x) for x in keys]
+    complete = dict(zip(keys, values))
+    non_empty_fields = dict((k, v) for k, v in complete.iteritems() if v)
+    return urllib.urlencode(non_empty_fields)
 
 
 def connect_n_parse(url):
