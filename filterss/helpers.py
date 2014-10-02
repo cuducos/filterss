@@ -48,7 +48,7 @@ def test_cond(condition, value, inclusive):
     """
     Separte multiple conditions separeted by commas (filters) and test them for
     a given value; the inclusive boolean var decide if it should or should not
-    macth the be present in the given value. It always returns a boolean.
+    be present in the given value. It always returns a boolean.
     """
     if condition is None:
         return True
