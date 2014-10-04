@@ -1,11 +1,14 @@
 # coding: utf-8
+import sys
+import urllib
 from flask import render_template, redirect, request, make_response, abort
 from filterss import app
 from forms import FilterForm
-from helpers import get_url, url_vars, set_filter, connect_n_parse
-from helpers import remove_tags, test_cond, word_wrap, format_date, test_url
-import sys
-import urllib
+from helpers import (
+    connect_n_parse, format_date, get_filters, remove_tags, test_conditions,
+    url_vars, word_wrap
+)
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -20,103 +23,29 @@ def index():
 def filter():
     form = FilterForm()
     if form.validate_on_submit():
-        url = get_url(form.rss_url.data)
-        url_query = url_vars(
-            url,
-            form.t_inc.data,
-            form.t_exc.data,
-            form.l_inc.data,
-            form.l_exc.data)
-        return redirect('/info?' + url_query)
+        url_query = url_vars(get_filters(form))
+        return redirect('/info?{}'.format(url_query))
     return render_template('form.html', form=form)
-
-
-@app.route('/edit', methods=('GET', 'POST'))
-def edit():
-
-    # load GET vars
-    url = set_filter(request.args.get("url"))
-    t_inc = set_filter(request.args.get("t_inc"))
-    t_exc = set_filter(request.args.get("t_exc"))
-    l_inc = set_filter(request.args.get("l_inc"))
-    l_exc = set_filter(request.args.get("l_exc"))
-
-    # insert values into form
-    form = FilterForm()
-    form.rss_url.data = url
-    form.t_inc.data = t_inc
-    form.t_exc.data = t_exc
-    form.l_inc.data = l_inc
-    form.l_exc.data = l_exc
-    return render_template('form.html', form=form)
-
-
-@app.route('/rss')
-def rss():
-
-    # load GET vars
-    url = set_filter(request.args.get("url"))
-    t_inc = set_filter(request.args.get("t_inc"))
-    t_exc = set_filter(request.args.get("t_exc"))
-    l_inc = set_filter(request.args.get("l_inc"))
-    l_exc = set_filter(request.args.get("l_exc"))
-
-    # load orginal RSS (xml)
-    try:
-        dom = connect_n_parse(url)
-    except:
-        return abort(500)
-
-    # loop items
-    for item in dom.getElementsByTagName('item'):
-
-        # get title & link
-        title = item.getElementsByTagName('title')[0].toxml()
-        link = item.getElementsByTagName('link')[0].toxml()
-        title = remove_tags(title)
-        link = remove_tags(link)
-
-        # test conditions
-        cond1 = test_cond(t_inc, title, True)
-        cond2 = test_cond(t_exc, title, False)
-        cond3 = test_cond(l_inc, link, True)
-        cond4 = test_cond(l_exc, link, False)
-
-        # delete undesired nodes
-        if not cond1 or not cond2 or not cond3 or not cond4:
-            item.parentNode.removeChild(item)
-
-    # print RSS (xml)
-    filtered = dom.toxml()
-    response = make_response(filtered)
-    response.headers["Content-Type"] = "application/xml"
-    return response
 
 
 @app.route('/info')
 def info():
 
     # load GET vars
-    url = set_filter(request.args.get("url"))
-    t_inc = set_filter(request.args.get("t_inc"))
-    t_exc = set_filter(request.args.get("t_exc"))
-    l_inc = set_filter(request.args.get("l_inc"))
-    l_exc = set_filter(request.args.get("l_exc"))
-    url_vars_encoded = url_vars(url, t_inc, t_exc, l_inc, l_exc)
+    values = get_filters(request)
+    url_vars_encoded = url_vars(values)
     rss_url = '{}rss?{}'.format(request.url_root, url_vars_encoded)
     edit_url = '{}edit?{}'.format(request.url_root, url_vars_encoded)
-    rss_url_encoded = urllib.quote(rss_url)
+    rss_url_encoded = urllib.quote(values['url'])
 
     # load orginal RSS (xml)
     try:
-        dom = connect_n_parse(url)
+        dom = connect_n_parse(values['url'])
     except:
-        url_query = url_vars(url, t_inc, t_exc, l_inc, l_exc)
-        return redirect('/error?' + url_query)
+        return redirect('/error?{}'.format(url_vars_encoded))
 
     # get title
-    rss_title = dom.getElementsByTagName('title')[0].toxml()
-    rss_title = remove_tags(rss_title)
+    rss_title = remove_tags(dom.getElementsByTagName('title')[0].toxml())
 
     # loop items
     all_items = []
@@ -132,10 +61,7 @@ def info():
         date = remove_tags(date)
 
         # test conditions
-        cond1 = test_cond(t_inc, title, True)
-        cond2 = test_cond(t_exc, title, False)
-        cond3 = test_cond(l_inc, link, True)
-        cond4 = test_cond(l_exc, link, False)
+        conditions = test_conditions(values, title, link)
 
         # sort nodes
         item_class = 'skip'
@@ -144,14 +70,14 @@ def info():
                 'url': link,
                 'date': format_date(date),
                 'css_class': item_class}
-        if cond1 and cond2 and cond3 and cond4:
+        if conditions:
             filtered_items.append(item)
             item['css_class'] = ''
         all_items.append(item)
 
     return render_template(
         'info.html',
-        url=url,
+        url=values['url'],
         rss_title=rss_title,
         rss_url=rss_url,
         rss_url_encoded=rss_url_encoded,
@@ -160,10 +86,54 @@ def info():
         filtered_items=filtered_items)
 
 
-@app.route('/check_url', methods=['GET'])
-def check_url():
-    url = request.args.get('url')
-    return str(test_url(url))
+@app.route('/edit', methods=('GET', 'POST'))
+def edit():
+
+    # load GET vars
+    values = get_filters(request)
+    values['rss_url'] = values['url']
+
+    # insert values into form
+    form = FilterForm()
+    for field in form:
+        if field.name in values.keys():
+            field.data = values[field.name]
+
+    # render the form with loaded data
+    return render_template('form.html', form=form)
+
+
+@app.route('/rss')
+def rss():
+
+    # load GET vars
+    values = get_filters(request)
+
+    # load orginal RSS (xml)
+    try:
+        dom = connect_n_parse(values['url'])
+    except:
+        return abort(500)
+
+    # loop items
+    for item in dom.getElementsByTagName('item'):
+
+        # get title & link
+        title = remove_tags(item.getElementsByTagName('title')[0].toxml())
+        link = remove_tags(item.getElementsByTagName('link')[0].toxml())
+
+        # test conditions
+        conditions = test_conditions(values, title, link)
+
+        # delete undesired nodes
+        if not conditions:
+            item.parentNode.removeChild(item)
+
+    # print RSS (xml)
+    filtered = dom.toxml()
+    response = make_response(filtered)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
 
 @app.route('/robots.txt', methods=['GET'])
