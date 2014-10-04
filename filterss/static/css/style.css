@@ -88,10 +88,10 @@ div.tagsinput {
     overflow-y: auto;
 }
 
-html #home div section form #accordion div div div.panel-body div.form-group div#title_inc_tagsinput span.tag,
-html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag,
-html #home div section form #accordion div div div.panel-body div.form-group div#link_inc_tagsinput span.tag,
-html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag {
+html #home div section form #accordion div div div.panel-body div.form-group div#t_inc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#t_exc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#l_inc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#l_exc_tagsinput span.tag {
     border: 1px solid #dfebcd;
     background: #e7f2dd;
     color: #689255;
@@ -104,17 +104,17 @@ html #home div section form #accordion div div div.panel-body div.form-group div
     margin: 0 5px 5px 0;
 }
 
-html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag,
-html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag {
+html #home div section form #accordion div div div.panel-body div.form-group div#t_exc_tagsinput span.tag,
+html #home div section form #accordion div div div.panel-body div.form-group div#l_exc_tagsinput span.tag {
     border-color: #e5d1d5;
     background-color: #eee1e1;
     color: #9c4f4f;
 }
 
-html #home div section form #accordion div div div.panel-body div.form-group div#title_inc_tagsinput span.tag a,
-html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag a,
-html #home div section form #accordion div div div.panel-body div.form-group div#link_inc_tagsinput span.tag a,
-html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag a {
+html #home div section form #accordion div div div.panel-body div.form-group div#t_inc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#t_exc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#l_inc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#l_exc_tagsinput span.tag a {
     display: inline;
     font-weight: bold;
     color: #689255;
@@ -122,8 +122,8 @@ html #home div section form #accordion div div div.panel-body div.form-group div
     font-size: 80%;
 }
 
-html #home div section form #accordion div div div.panel-body div.form-group div#title_exc_tagsinput span.tag a,
-html #home div section form #accordion div div div.panel-body div.form-group div#link_exc_tagsinput span.tag a {
+html #home div section form #accordion div div div.panel-body div.form-group div#t_exc_tagsinput span.tag a,
+html #home div section form #accordion div div div.panel-body div.form-group div#l_exc_tagsinput span.tag a {
     color: #9c4f4f;
 }
 

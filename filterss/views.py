@@ -23,11 +23,31 @@ def filter():
         url = get_url(form.rss_url.data)
         url_query = url_vars(
             url,
-            form.title_inc.data,
-            form.title_exc.data,
-            form.link_inc.data,
-            form.link_exc.data)
+            form.t_inc.data,
+            form.t_exc.data,
+            form.l_inc.data,
+            form.l_exc.data)
         return redirect('/info?' + url_query)
+    return render_template('form.html', form=form)
+
+
+@app.route('/edit', methods=('GET', 'POST'))
+def edit():
+
+    # load GET vars
+    url = set_filter(request.args.get("url"))
+    t_inc = set_filter(request.args.get("t_inc"))
+    t_exc = set_filter(request.args.get("t_exc"))
+    l_inc = set_filter(request.args.get("l_inc"))
+    l_exc = set_filter(request.args.get("l_exc"))
+
+    # insert values into form
+    form = FilterForm()
+    form.rss_url.data = url
+    form.t_inc.data = t_inc
+    form.t_exc.data = t_exc
+    form.l_inc.data = l_inc
+    form.l_exc.data = l_exc
     return render_template('form.html', form=form)
 
 
@@ -36,10 +56,10 @@ def rss():
 
     # load GET vars
     url = set_filter(request.args.get("url"))
-    t_inc = set_filter(request.args.get("title_inc"))
-    t_exc = set_filter(request.args.get("title_exc"))
-    l_inc = set_filter(request.args.get("link_inc"))
-    l_exc = set_filter(request.args.get("link_exc"))
+    t_inc = set_filter(request.args.get("t_inc"))
+    t_exc = set_filter(request.args.get("t_exc"))
+    l_inc = set_filter(request.args.get("l_inc"))
+    l_exc = set_filter(request.args.get("l_exc"))
 
     # load orginal RSS (xml)
     try:
@@ -78,12 +98,13 @@ def info():
 
     # load GET vars
     url = set_filter(request.args.get("url"))
-    t_inc = set_filter(request.args.get("title_inc"))
-    t_exc = set_filter(request.args.get("title_exc"))
-    l_inc = set_filter(request.args.get("link_inc"))
-    l_exc = set_filter(request.args.get("link_exc"))
-    rss_url = request.url_root + 'rss?'
-    rss_url = rss_url + url_vars(url, t_inc, t_exc, l_inc, l_exc)
+    t_inc = set_filter(request.args.get("t_inc"))
+    t_exc = set_filter(request.args.get("t_exc"))
+    l_inc = set_filter(request.args.get("l_inc"))
+    l_exc = set_filter(request.args.get("l_exc"))
+    url_vars_encoded = url_vars(url, t_inc, t_exc, l_inc, l_exc)
+    rss_url = '{}rss?{}'.format(request.url_root, url_vars_encoded)
+    edit_url = '{}edit?{}'.format(request.url_root, url_vars_encoded)
     rss_url_encoded = urllib.quote(rss_url)
 
     # load orginal RSS (xml)
@@ -134,6 +155,7 @@ def info():
         rss_title=rss_title,
         rss_url=rss_url,
         rss_url_encoded=rss_url_encoded,
+        edit_url=edit_url,
         all_items=all_items,
         filtered_items=filtered_items)
 
