@@ -7,7 +7,7 @@ class FilterForm(Form):
     rss_url = TextField('URL of your RSS', [
         DataRequired('No URL entered'),
         URL(True, 'Invalid URL')])
-    t_inc = TextField('Title must contain')
-    t_exc = TextField('Title cannot contain')
-    l_inc = TextField('Link must contain')
-    l_exc = TextField('Link cannot contain')
+    title_inc = TextField('Title must contain')
+    title_exc = TextField('Title cannot contain')
+    link_inc = TextField('Link must contain')
+    link_exc = TextField('Link cannot contain')
