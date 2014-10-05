@@ -1,9 +1,9 @@
 $(document).ready(function(){
 
-    $('#t_inc').tagsInput({'defaultText': '…'});
-    $('#t_exc').tagsInput({'defaultText': '…'});
-    $('#l_inc').tagsInput({'defaultText': '…'});
-    $('#l_exc').tagsInput({'defaultText': '…'});
+    $('#title_inc').tagsInput({'defaultText': '…'});
+    $('#title_exc').tagsInput({'defaultText': '…'});
+    $('#link_inc').tagsInput({'defaultText': '…'});
+    $('#link_exc').tagsInput({'defaultText': '…'});
 
     set_submit(false);
     $('#rss_url').blur(check_url);
