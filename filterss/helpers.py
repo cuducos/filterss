@@ -137,7 +137,7 @@ def remove_tags(string):
     return string.strip()
 
 
-def word_wrap(txt, length=48):
+def word_wrap(txt, length=120):
     """
     Return a wrapped a paragraph adding elipse after the first word that
     appears after a given number of characters (length var)

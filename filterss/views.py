@@ -16,7 +16,10 @@ sys.setdefaultencoding('utf-8')
 
 @app.route('/')
 def index():
-    return render_template('form.html', form=FilterForm())
+    return render_template('form.html',
+                           js='init',
+                           title=app.config['TITLE'],
+                           form=FilterForm())
 
 
 @app.route('/filter', methods=('GET', 'POST'))
@@ -25,7 +28,10 @@ def filter():
     if form.validate_on_submit():
         url_query = url_vars(get_filters(form))
         return redirect('/info?{}'.format(url_query))
-    return render_template('form.html', form=form)
+    return render_template('form.html',
+                           js='init',
+                           title=app.config['TITLE'],
+                           form=FilterForm())
 
 
 @app.route('/info')
@@ -49,7 +55,6 @@ def info():
 
     # loop items
     all_items = []
-    filtered_items = []
     for item in dom.getElementsByTagName('item'):
 
         # get title & link
@@ -63,27 +68,24 @@ def info():
         # test conditions
         conditions = test_conditions(values, title, link)
 
-        # sort nodes
-        item_class = 'skip'
+        # create item
         item = {'title': title,
                 'title_wrap': word_wrap(title),
                 'url': link,
                 'date': format_date(date),
-                'css_class': item_class}
-        if conditions:
-            filtered_items.append(item)
-            item['css_class'] = ''
+                'css_class': '' if conditions else 'skip'}
         all_items.append(item)
 
     return render_template(
         'info.html',
+        js='info',
+        title='#filterss {}'.format(rss_title),
         url=values['url'],
         rss_title=rss_title,
         rss_url=rss_url,
         rss_url_encoded=rss_url_encoded,
         edit_url=edit_url,
-        all_items=all_items,
-        filtered_items=filtered_items)
+        all_items=all_items)
 
 
 @app.route('/edit', methods=('GET', 'POST'))
@@ -100,7 +102,10 @@ def edit():
             field.data = values[field.name]
 
     # render the form with loaded data
-    return render_template('form.html', form=form)
+    return render_template('form.html',
+                           js='init',
+                           title=app.config['TITLE'],
+                           form=form)
 
 
 @app.route('/rss')
@@ -114,6 +119,11 @@ def rss():
         dom = connect_n_parse(values['url'])
     except:
         return abort(500)
+
+    # change title
+    title_node = dom.getElementsByTagName('title')[0]
+    rss_title = remove_tags(title_node.toxml())
+    title_node.firstChild.replaceWholeText('#filterss {}'.format(rss_title))
 
     # loop items
     for item in dom.getElementsByTagName('item'):

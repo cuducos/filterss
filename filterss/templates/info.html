@@ -1,61 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
 
-                <article class="col-md-12">
+                <div class="col-md-12">
 
-                    <h2>Here it is, the URL for your filtered feed:</h2>
-
+                    <h2>Here it is: the URL for your filtered feed</h2>
+                    
+                    <p>Paste this URL into your RSS reader:</p>
                     <pre>{{ rss_url }}</pre>
-
-                    <p>                        
-                        Just copy and paste this address into your feed reader.
-                        You can <a href="{{ edit_url }}">edit it if you want</a>.
-                    </p>
-
-                </article>
-
-                <div class="col-md-6 comparison">
-                    <h4>
-                        Filtered <small>{{ rss_title }}</small>                        
-                    </h4>
-                    <table class="table table-condensed table-striped">
-                    {% for i in filtered_items %}
-                        <tr>
-                            <td>
-                                <small>{{ i.date }}</small>
-                            </td>
-                            <td>
-                                <a href="{{ i.url }}" title="{{ i.title }}">{{ i.title_wrap }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </table>
-                    <ul class="list-inline">
+                    
+                    <ul class="list-inline buttons">
+                        <li>
+                            <button id="bookmark" type="button" class="btn btn-primary btn-sm">
+                                Add to your bookmarks
+                            </button>
+                        </li>
+                        <li>
+                            <a href="{{ edit_url }}" class="btn btn-primary btn-sm">
+                                Edit your filters
+                            </a>
+                        </li>
                         <li>
                             <a href="http://www.feedly.com/home#subscription/feed/{{ rss_url_encoded }}">
                                 <img src="http://s3.feedly.com/img/follows/feedly-follow-rectangle-flat-medium_2x.png" alt="Add to Feedly" width="71" height="28" />
                             </a>
                         </li>
                     </ul>
+                    
+                    <div class="comparison">
 
-                </div>
+                        <h3>This is a preview of your filtered feed:</h3>
+                    
+                        <table class="table table-condensed table-striped">
+                        
+                        {% for i in all_items %}
+                            <tr class="{{ i.css_class }}">
+                                <td>
+                                    <small>{{ i.date }}</small>
+                                </td>
+                                <td>
+                                    <a href="{{ i.url }}" title="{{ i.title }}">{{ i.title_wrap }}</a>
+                                </td>
+                            </tr>
+                        
+                        {% endfor %}
+                        
+                        </table>
+                
+                    </div>
 
-                <div class="col-md-6 comparison">
-                    <h4>
-                        Original <small>{{ rss_title }}</small>                        
-                    </h4>
-                    <table class="table table-condensed table-striped">
-                    {% for i in all_items %}
-                        <tr class="{{ i.css_class }}">
-                            <td>
-                                <small>{{ i.date }}</small>
-                            </td>
-                            <td>
-                                <a href="{{ i.url }}" title="{{ i.title }}">{{ i.title_wrap }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </table>
                 </div>
 
 {% endblock %}

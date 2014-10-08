@@ -1,3 +1,7 @@
+/***********************/
+/* Header               /
+/***********************/
+
 header {
     border-bottom: 1px solid #e3e3e3;
     margin-bottom: 3em;
@@ -8,6 +12,11 @@ header a, header a:hover {
     color: #4a6f9d  ;
 }
 
+
+/***********************/
+/* Input form           /
+/***********************/
+
 #accordion a {
     display: block;
     width: 100%;
@@ -17,6 +26,19 @@ header a, header a:hover {
 #accordion a:hover {
     text-decoration: none;
 }
+
+#url_feedback {
+    display: none;
+    margin: 20px 12px 0 0;
+}
+
+.help-block strong {
+    text-decoration: underline;
+}
+
+/***********************/
+/* Instructions @ home  /
+/***********************/
 
 sidebar ol {
     display: block;
@@ -47,17 +69,20 @@ sidebar ol li:before {
     border-radius: 999px
 }
 
-#url_feedback {
-    display: none;
-    margin: 20px 12px 0 0;
+/***********************/
+/* Results page         /
+/***********************/
+
+.results input {
+    width: 100%;
 }
 
-.help-block strong {
-    text-decoration: underline;
+.results li {
+    margin-bottom: 0.5em;
 }
 
 .comparison {
-    margin-top: 1em;
+    margin-top: 3em;
 }
 
 .comparison tr td {
@@ -70,13 +95,19 @@ sidebar ol li:before {
     opacity: 0.3;
 }
 
+/***********************/
+/* Footer               /
+/***********************/
+
 footer {
     border-top: 1px solid #e3e3e3;
     margin-top: 3em;
     padding-top: 1em;
 }
 
-/* jQuery-Tags-Input */
+/***********************/
+/* jQuery-Tags-Input    /
+/***********************/
 
 div.tagsinput {
     border: 1px solid #ccc;
