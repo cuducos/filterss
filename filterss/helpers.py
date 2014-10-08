@@ -150,10 +150,12 @@ def word_wrap(txt, length=48):
 
 def format_date(string):
     """
-    Return a date (dd/mm/yyyy) from a rfc822 string format
+    Return a date & time (dd/mm/yyyy hh:mm) from a rfc822 string format
     """
     new_date = rfc822.parsedate_tz(string)
     y = new_date[0]
     m = '{0:0>2}'.format(new_date[1])
     d = '{0:0>2}'.format(new_date[2])
-    return '{}/{}/{}'.format(d, m, y)
+    H = '{0:0>2}'.format(new_date[3])
+    i = '{0:0>2}'.format(new_date[4])
+    return '{}/{}/{} {}:{}'.format(d, m, y, H, i)
