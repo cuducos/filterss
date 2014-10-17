@@ -130,6 +130,15 @@ def rss():
     url_vars_encoded = url_vars(values)
     link_node.firstChild.replaceWholeText('{}info?{}'.format(request.url_root, url_vars_encoded))
 
+    # remove feedburner tags
+    channel = dom.getElementsByTagName('channel')
+    for n in channel[0].getElementsByTagName('feedburner:info'):
+        channel[0].removeChild(n)
+    for n in channel[0].getElementsByTagName('feedburner:feedFlare'):
+        channel[0].removeChild(n)
+    for n in channel[0].getElementsByTagName('atom10:link'):
+        channel[0].removeChild(n)
+
     # loop items
     for item in dom.getElementsByTagName('item'):
 
