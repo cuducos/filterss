@@ -125,6 +125,11 @@ def rss():
     rss_title = remove_tags(title_node.toxml())
     title_node.firstChild.replaceWholeText('#filterss {}'.format(rss_title))
 
+    # change link
+    link_node = dom.getElementsByTagName('link')[0]
+    url_vars_encoded = url_vars(values)
+    link_node.firstChild.replaceWholeText('{}info?{}'.format(request.url_root, url_vars_encoded))
+
     # loop items
     for item in dom.getElementsByTagName('item'):
 
