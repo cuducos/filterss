@@ -2,8 +2,11 @@ from .forms import FilterForm
 from .helpers import (connect_n_parse, format_date, get_filters, remove_tags,
                       test_conditions, url_vars, word_wrap)
 from filterss import app
-from flask import render_template, redirect, request, make_response, abort
+from flask import (Blueprint, abort, make_response, redirect, render_template,
+                   request, send_from_directory)
 from urllib.parse import quote
+
+site = Blueprint('site', __name__)
 
 
 @app.route('/')
@@ -154,10 +157,8 @@ def rss():
 
 
 @app.route('/robots.txt', methods=['GET'])
-def sitemap():
-    response = make_response(open('robots.txt').read())
-    response.headers["Content-type"] = "text/plain"
-    return response
+def robots():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 @app.route('/error')

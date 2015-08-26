@@ -1,10 +1,9 @@
-import textwrap
 import re
-
 from .forms import FilterForm
 from email.utils import parsedate_tz
 from filterss import app
 from flask import request
+from textwrap import wrap
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from werkzeug.local import LocalProxy
@@ -33,9 +32,8 @@ def get_filters(obj):
 
     # if it is a GET request
     elif type(obj) is LocalProxy:
-        keys = app.config['FILTERS'].keys()
-        values = [request.args.get(k) for k in keys]
-        d = dict(zip(keys, values))
+        keys = app.config['FILTERS']
+        d = dict(zip(keys, map((lambda k: request.args.get(k)), keys)))
 
     # error
     else:
@@ -127,9 +125,9 @@ def remove_tags(string):
     Return str with certaing html/xml tags removed (title, link and pubDate)
     """
     tags = ['title', 'link', 'pubDate']
-    tags_re = '(%s)' % '|'.join(tags)
-    starttag_re = re.compile(r'<%s(/?>|(\s+[^>]*>))' % tags_re, re.U)
-    endtag_re = re.compile('</%s>' % tags_re)
+    tags_re = '({})'.format('|'.join(tags))
+    starttag_re = re.compile(r'<{}(/?>|(\s+[^>]*>))'.format(tags_re, re.U))
+    endtag_re = re.compile('</{}>'.format(tags_re))
     string = starttag_re.sub('', string)
     string = endtag_re.sub('', string)
     string = string.replace('<![CDATA[', '')
@@ -144,7 +142,7 @@ def word_wrap(txt, length=120):
     """
     if len(txt) <= length or length == 0:
         return txt
-    new_txt = textwrap.wrap(txt, length)
+    new_txt = wrap(txt, length)
     return new_txt[0] + u'…'
 
 

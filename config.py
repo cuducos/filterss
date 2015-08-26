@@ -1,8 +1,6 @@
+from os import getenv
+
 CSRF_ENABLED = True
-SECRET_KEY = 'NnDe4x3}qowql6ni-LqhuHzbs#RpsG$p'
+SECRET_KEY = getenv('SECRET_KEY', 't8SUHN4727Q29XZU9BNkLNd0eRlvSEzp1Rs9PgWm')
 TITLE = 'Filterss: More power over your feeds'
-FILTERS = {'url': None,
-           'title_inc': None,
-           'title_exc': None,
-           'link_inc': None,
-           'link_exc': None}
+FILTERS = ['url', 'title_inc', 'title_exc', 'link_inc', 'link_exc']
