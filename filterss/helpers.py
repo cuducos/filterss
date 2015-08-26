@@ -1,12 +1,12 @@
-# coding: utf-8
 import textwrap
-import urllib
-import urllib2
 import re
-import rfc822
+
+from .forms import FilterForm
+from email.utils import parsedate_tz
 from filterss import app
 from flask import request
-from forms import FilterForm
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 from werkzeug.local import LocalProxy
 from xml.dom.minidom import parse
 
@@ -23,7 +23,7 @@ def set_filter(value):
 
 def get_filters(obj):
     """
-    Gets an object (form, request, etc.) and return a dictionary with the filter
+    Gets an object (form, request, etc) and return a dictionary with the filter
     """
 
     # if it is a FilterForm object with keys
@@ -50,7 +50,7 @@ def clean_filters(d):
     Delete empty fields from the filters dictionary, strip and convert strings
     to lower case
     """
-    return dict((k, set_filter(v)) for k, v in d.iteritems() if v)
+    return dict((k, set_filter(v)) for k, v in d.items() if v)
 
 
 def url_vars(d):
@@ -59,7 +59,7 @@ def url_vars(d):
     """
     cleaned = clean_filters(d)
     cleaned.pop('rss_url', None)
-    return urllib.urlencode(cleaned)
+    return urlencode(cleaned)
 
 
 def connect_n_parse(url):
@@ -70,16 +70,16 @@ def connect_n_parse(url):
         ua = 'Mozilla/5.0'
         accept = 'application/rss+xml,application/xhtml+xml,application/xml'
         hdr = {'User-Agent': ua, 'Accept': accept}
-        req = urllib2.Request(url, headers=hdr)
-        doc = urllib2.urlopen(req)
+        req = Request(url, headers=hdr)
+        doc = urlopen(req)
     except:
-        doc = urllib2.urlopen(url)
+        doc = urlopen(url)
     return parse(doc)
 
 
 def test_conditions(d, title, link):
     """
-    Gets a dicitonary (d) with the filters and test them comparing to the values
+    Gets a dicitonary with the filters and test them comparing to the values
     from the RSS (title and link)
     """
     # iterate through the filters
@@ -152,7 +152,7 @@ def format_date(string):
     """
     Return a date & time (dd/mm/yyyy hh:mm) from a rfc822 string format
     """
-    new_date = rfc822.parsedate_tz(string)
+    new_date = parsedate_tz(string)
     y = new_date[0]
     m = '{0:0>2}'.format(new_date[1])
     d = '{0:0>2}'.format(new_date[2])

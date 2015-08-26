@@ -1,17 +1,9 @@
-# coding: utf-8
-import sys
-import urllib
-from flask import render_template, redirect, request, make_response, abort
+from .forms import FilterForm
+from .helpers import (connect_n_parse, format_date, get_filters, remove_tags,
+                      test_conditions, url_vars, word_wrap)
 from filterss import app
-from forms import FilterForm
-from helpers import (
-    connect_n_parse, format_date, get_filters, remove_tags, test_conditions,
-    url_vars, word_wrap
-)
-
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
+from flask import render_template, redirect, request, make_response, abort
+from urllib.parse import quote
 
 
 @app.route('/')
@@ -42,7 +34,7 @@ def info():
     url_vars_encoded = url_vars(values)
     rss_url = '{}rss?{}'.format(request.url_root, url_vars_encoded)
     edit_url = '{}edit?{}'.format(request.url_root, url_vars_encoded)
-    rss_url_encoded = urllib.quote(values['url'])
+    rss_url_encoded = quote(values['url'])
 
     # load orginal RSS (xml)
     try:
@@ -128,7 +120,8 @@ def rss():
     # change link
     link_node = dom.getElementsByTagName('link')[0]
     url_vars_encoded = url_vars(values)
-    link_node.firstChild.replaceWholeText('{}info?{}'.format(request.url_root, url_vars_encoded))
+    link_node.firstChild.replaceWholeText('{}info?{}'.format(request.url_root,
+                                                             url_vars_encoded))
 
     # remove feedburner tags
     channel = dom.getElementsByTagName('channel')

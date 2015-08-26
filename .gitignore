@@ -1,8 +1,29 @@
-/venv/
-*.pyc
-*.DS_Store
-*.swp
-*.swo
+# Python
+
+__pycache__/
+*.py[cod]
+
+# OSX
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Vim
+
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
 .ropeproject/
-.vagrant/
-.idea/
