@@ -11,10 +11,5 @@ Filterss allows you to filter your RSS according to words that are (or are not) 
 
 * If you want, get your [Python](http://www.python.org) running under a [virtualenv](https://pypi.python.org/pypi/virtualenv).
 * Install whatever is needed with `pip install -r requirements.txt`.
-* Then `python manage.py runserver` to start your server.
-
-## License
-
-Copyrigh (c) 2014 Eduardo Cuducos.
-
-Licensed under the [MIT license](https://github.com/cuducos/whiskyton/raw/master/MIT-LICENSE).
+* Set the app with `export FLASK_APP=filterss/__init__.py`
+* Then `flask run` to start your server.
